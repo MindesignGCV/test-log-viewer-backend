@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <style>
+      .last-chunk-by-http-api {
+        height: 300px;
+        overflow: auto;
+      }
+      .last-chunk-by-websocket {
+        height: 300px;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    Last chunk from HTTP API:
+    <pre class="last-chunk-by-http-api"></pre>
+    <br />
+    Last chunk from websocket:
+    <pre class="last-chunk-by-websocket"></pre>
+    <script type="text/javascript">
+      // Read data using HTTP API:
+      const readViaHTTP = async () => {
+        let lastChunk = new Uint8Array([]);
+        const node = document.querySelector(".last-chunk-by-http-api");
+        if (!node) {
+          return;
+        }
+
+        const intervalId = setInterval(() => {
+          node.textContent = new TextDecoder().decode(lastChunk);
+        }, 200);
+
+        const response = await fetch("/view-log");
+        for await (const chunk of response.body) {
+          lastChunk = chunk;
+        }
+
+        clearInterval(intervalId);
+
+        node.textContent = new TextDecoder().decode(lastChunk);
+      };
+
+      // Read data using websocket:
+      const readViaWS = async () => {
+        let lastChunk = "";
+        const node = document.querySelector(".last-chunk-by-websocket");
+        if (!node) {
+          return;
+        }
+
+        const intervalId = setInterval(() => {
+          node.textContent = lastChunk;
+        }, 200);
+
+        const socket = new WebSocket(`ws://${location.host}/view-log-ws`);
+
+        socket.addEventListener("open", (event) => {
+          socket.send("Hello Server!");
+        });
+
+        socket.addEventListener("message", (event) => {
+          lastChunk = event.data;
+        });
+
+        socket.addEventListener("close", (event) => {
+          clearInterval(intervalId);
+
+          node.textContent = lastChunk;
+        });
+      };
+
+      readViaHTTP();
+      readViaWS();
+    </script>
+  </body>
+</html>
