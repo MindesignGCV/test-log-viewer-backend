@@ -26,6 +26,7 @@ export const StreamBuildLog = Effect.gen(function* (_) {
     Stream.take(firstPartSize),
     Stream.grouped(1000),
     Stream.map((chunk) => pipe(chunk, Chunk.join("\n"))),
+    Stream.schedule(Schedule.spaced("10 milli")),
     Stream.concat(
       pipe(
         stream,
