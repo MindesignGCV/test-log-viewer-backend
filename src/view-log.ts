@@ -1,4 +1,4 @@
-import { Effect, Layer } from "effect";
+import { Effect, Layer, Stream } from "effect";
 import { Fastify } from "./fastify";
 import { AppReply, mkHandler } from "./mk-handler";
 import { NodeStream } from "@effect/platform-node";
@@ -36,7 +36,11 @@ export const ViewLogRouteLive = Layer.effectDiscard(
 
         const buildLog = yield* _(StreamBuildLog);
 
-        return yield* _(buildLog, NodeStream.toReadable);
+        return yield* _(
+          buildLog,
+          Stream.map((line) => line + "\n"),
+          NodeStream.toReadable,
+        );
       }).pipe(mkHandler(runtime)),
     );
   }),

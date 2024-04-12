@@ -6,6 +6,8 @@ Application will be available at http://localhost:4000
 
 There is HTTP API at `/view-log` and websocket API at `/view-log-ws`.
 
-Both streams build log with maximum bandwith, but slows down at the end.
+Both are streaming build log with limited bandwith to avoid overwhelming the frontend.
+
+Each websocket message (and chunk in HTTP API) contains one line.
 
 Example usage can be found at `./index.html`.

@@ -15,12 +15,11 @@ export const ViewLogWSRouteLive = Layer.effectDiscard(
 
           yield* _(
             buildLog,
-            Stream.tap((chunk) =>
+            Stream.runForEach((line) =>
               Effect.gen(function* (_) {
-                socket.send(chunk);
+                socket.send(line);
               }),
             ),
-            Stream.runDrain,
           );
 
           socket.close();
