@@ -19,6 +19,7 @@
   "dependencies": {
     "@effect/platform-node": "^0.45.29",
     "@effect/schema": "^0.64.11",
+    "@fastify/cors": "^9.0.1",
     "@fastify/swagger": "^8.14.0",
     "@fastify/swagger-ui": "^3.0.0",
     "@fastify/websocket": "^10.0.1",

@@ -6,6 +6,7 @@ import {
   LogLevel,
   ReadonlyArray,
   ReadonlyRecord,
+  String,
   pipe,
 } from "effect";
 
@@ -23,6 +24,7 @@ export class AppConfig extends Context.Tag("app.config")<
     readonly env: AppEnv;
     readonly logLevel: LogLevel.LogLevel;
     readonly buildLogFile: string;
+    readonly corsOriginHostnames: readonly string[];
   }
 >() {}
 
@@ -74,10 +76,16 @@ export const AppConfigLive = Layer.suspend(() =>
         Config.withDefault(`${__dirname}/../build.log`),
       );
 
+      const corsOriginHostnames = yield* _(
+        Config.string("APP_CORS_ORIGIN_HOSTNAMES"),
+        Config.withDefault("localhost,test-log-viewer.stg.onepunch.agency"),
+      );
+
       return AppConfig.of({
         env,
         logLevel: LogLevel.fromLiteral(logLevelLiteral),
         buildLogFile,
+        corsOriginHostnames: pipe(corsOriginHostnames, String.split(",")),
       });
     }),
   ),

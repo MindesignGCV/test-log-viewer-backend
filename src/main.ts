@@ -6,6 +6,7 @@ import { ViewLogRouteLive } from "./view-log";
 import { IndexRouteLive } from "./index";
 import { FastifyWebsocketLive } from "./fastify-websocket";
 import { ViewLogWSRouteLive } from "./view-log-ws";
+import { FastifyCorsLive } from "./fastify-cors";
 
 const MainLive = ServerLive.pipe(
   Layer.provide(
@@ -13,6 +14,7 @@ const MainLive = ServerLive.pipe(
   ),
   Layer.provide(FastifySwaggerLive),
   Layer.provide(FastifyWebsocketLive),
+  Layer.provide(FastifyCorsLive),
   Layer.provideMerge(FastifyLive),
   Layer.provideMerge(AppConfigLive),
 );
