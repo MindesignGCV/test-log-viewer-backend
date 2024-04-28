@@ -9,8 +9,12 @@ export const ViewLogWSRouteLive = Layer.effectDiscard(
     const runtime = yield* _(Effect.runtime<AppConfig>());
 
     fastify.get("/view-log-ws", { websocket: true }, (socket, _request) => {
-      socket.on("message", (_msg) =>
+      socket.on("message", (msg) =>
         Effect.gen(function* (_) {
+          if (msg.toString() === "ping") {
+            return;
+          }
+
           const buildLog = yield* _(StreamBuildLog);
 
           yield* _(
