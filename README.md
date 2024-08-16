@@ -1,4 +1,4 @@
-Download log file from here: https://drive.google.com/file/d/1Gf-YMrKVXpDbKvcIe0gxweC33jUpaUR0/view?usp=sharing
+Download log file from here: https://drive.google.com/file/d/1POWpaw3YUaUe6zziqmWYkJfg4vgq9Wnv/view?usp=sharing
 
 and put at `./build.log`, then launch application by command: `npm start`
 
